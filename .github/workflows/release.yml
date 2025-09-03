@@ -39,8 +39,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Debug: Print cmd/init.go content
-        run: cat cmd/init.go
+      
 
       - name: Run GoReleaser (without Docker build/push)
         uses: goreleaser/goreleaser-action@v5
