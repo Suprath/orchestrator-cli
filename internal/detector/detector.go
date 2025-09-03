@@ -1,4 +1,3 @@
-// FILE: internal/detector/detector.go
 package detector
 
 import (

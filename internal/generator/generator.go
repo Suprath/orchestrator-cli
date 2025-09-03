@@ -1,4 +1,3 @@
-// FILE: internal/generator/generator.go
 package generator
 import (
     "os"

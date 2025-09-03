@@ -1,4 +1,3 @@
-// FILE: internal/github/client.go
 package github
 
 import (

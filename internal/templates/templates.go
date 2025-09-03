@@ -1,4 +1,3 @@
-// FILE: internal/templates/templates.go
 package templates
 import "embed"
 
