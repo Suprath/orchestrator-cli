@@ -53,4 +53,4 @@ jobs:
           BUILDX_BUILDER: my-builder
 
       - name: Build and Push Docker Image
-        run: VERSION=${{ github.ref }}; VERSION=${VERSION#refs/tags/}; IMAGE_NAME=suprathps/orchestrator; docker buildx build --platform linux/amd64,linux/arm64 --tag ${IMAGE_NAME}:${VERSION} --tag ${IMAGE_NAME}:latest --file Dockerfile --push .
+        run: "VERSION=${{ github.ref }}; VERSION=${VERSION#refs/tags/}; IMAGE_NAME=suprathps/orchestrator; docker buildx build --platform linux/amd64,linux/arm64 --tag ${IMAGE_NAME}:${VERSION} --tag ${IMAGE_NAME}:latest --file Dockerfile --push ."
