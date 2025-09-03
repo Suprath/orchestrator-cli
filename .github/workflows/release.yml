@@ -56,10 +56,4 @@ jobs:
         env:
           TAG_VERSION: ${{ github.ref_name }}
         run: |
-          IMAGE_NAME=suprathps/orchestrator
-          
-          docker buildx build --platform linux/amd64,linux/arm64 \
-            --tag ${IMAGE_NAME}:${TAG_VERSION} \
-            --tag ${IMAGE_NAME}:latest \
-            --file Dockerfile \
-            --push .
+          echo "Hello from Docker build step"
