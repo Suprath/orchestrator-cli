@@ -41,6 +41,7 @@ dockers:
     build_flag_templates:
       - "--platform=linux/amd64"
       - "--platform=linux/arm64"
+      - "--load"
     extra_files:
       - internal/templates
       - go.mod
@@ -48,4 +49,3 @@ dockers:
       - main.go
       - cmd/
       - internal/
-    docker_load: true
