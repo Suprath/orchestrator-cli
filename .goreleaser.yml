@@ -43,3 +43,5 @@ dockers:
       - "--platform=linux/arm64"
     extra_files:
       - internal/templates
+      - go.mod
+      - go.sum
