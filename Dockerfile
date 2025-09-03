@@ -23,7 +23,7 @@ RUN apk add --no-cache \
 COPY --from=builder /orchestrator /usr/local/bin/orchestrator
 
 # Copy the entire templates directory into a known location in the image
-COPY templates /templates
+COPY internal/templates /templates
 
 # Set the working directory to where the user's code will be mounted
 WORKDIR /app

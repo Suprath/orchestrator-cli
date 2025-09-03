@@ -42,4 +42,4 @@ dockers:
       - "--platform=linux/amd64"
       - "--platform=linux/arm64"
     extra_files:
-      - templates
+      - internal/templates
