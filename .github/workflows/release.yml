@@ -39,15 +39,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Debug: Verify Docker Login Status
-        run: docker login
-
-      - name: Debug: Try Pushing a Dummy Image
-        run: |
-          docker pull hello-world:latest
-          docker tag hello-world:latest suprathps/dummy-test-image:latest
-          docker push suprathps/dummy-test-image:latest
-
       - name: Run GoReleaser (without Docker build/push)
         uses: goreleaser/goreleaser-action@v5
         with:
@@ -57,3 +48,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCKER_BUILDKIT: 1
           BUILDX_BUILDER: my-builder
+
+      - name: Build and Push Docker Image
+        run: |
+          VERSION=$(echo ${{ github.ref }} | sed -e 's,.*/\(v.*\),\1,')
+          IMAGE_NAME=suprathps/orchestrator
+          
+          docker buildx build --platform linux/amd64,linux/arm64 \
+            --tag ${IMAGE_NAME}:${VERSION} \
+            --tag ${IMAGE_NAME}:latest \
+            --file Dockerfile \
+            --push .
