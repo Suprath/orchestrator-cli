@@ -48,3 +48,4 @@ dockers:
       - main.go
       - cmd/
       - internal/
+    docker_load: true
