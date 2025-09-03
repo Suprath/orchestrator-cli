@@ -1,0 +1,27 @@
+# FILE: internal/templates/php_laravel/Dockerfile.tmpl
+# --- Build Stage ---
+FROM composer:2 as vendor
+WORKDIR /app
+COPY . .
+# Install dependencies
+RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+
+# --- Final Stage ---
+FROM php:8.2-fpm-alpine
+WORKDIR /var/www/html
+
+# Install required PHP extensions
+RUN apk add --no-cache oniguruma-dev libxml2-dev
+RUN docker-php-ext-install mbstring dom pdo pdo_mysql
+
+# Copy application files
+COPY . .
+# Copy installed vendor dependencies from the build stage
+COPY --from=vendor /app/vendor/ /var/www/html/vendor/
+
+# Set correct permissions
+RUN chown -R www-data:www-data /var/www/html
+
+# Expose port for PHP-FPM
+EXPOSE 9000
+CMD ["php-fpm"]

@@ -1,0 +1,27 @@
+# FILE: internal/templates/common/kubernetes/deployment.yml.tmpl
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .AppName }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .AppName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .AppName }}
+    spec:
+      containers:
+      - name: {{ .AppName }}
+        image: placeholder-image-url:latest # This will be updated by the CI/CD pipeline
+        ports:
+        - containerPort: 8000 # Default port, could be a template variable
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "512Mi"
+          limits:
+            cpu: "500m"
+            memory: "1Gi"

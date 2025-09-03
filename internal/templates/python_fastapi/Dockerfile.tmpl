@@ -1,0 +1,22 @@
+# FILE: internal/templates/python_fastapi/Dockerfile.tmpl
+# --- Build Stage ---
+FROM python:3.10-slim-bullseye AS builder
+WORKDIR /app
+COPY requirements.txt .
+# Install dependencies into a user-specific site directory
+RUN pip install --no-cache-dir --user -r requirements.txt
+
+# --- Final Stage ---
+FROM python:3.10-slim-bullseye
+WORKDIR /app
+# Copy the installed packages from the builder stage
+COPY --from=builder /root/.local /root/.local
+# Copy the application source code
+COPY . .
+
+# Add the user's local bin to the PATH (where executables like uvicorn are)
+ENV PATH=/root/.local/bin:$PATH
+
+EXPOSE 8000
+# The command to run the application. Assumes the main file is 'main.py' and the app instance is 'app'.
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

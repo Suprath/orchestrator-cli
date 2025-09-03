@@ -1,0 +1,14 @@
+# FILE: internal/templates/common/docker-compose.yml.tmpl
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://myuser:mypassword@db:5432/my-test-app
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: my-test-app
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
