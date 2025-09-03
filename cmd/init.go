@@ -25,26 +25,28 @@ var initCmd = &cobra.Command{
 		}
 
 		fmt.Println(" Scanning current directory for project type...")
-		currentDir, _ := os.Getwd()
-		archetype := detector.DetectArchetype(currentDir)
-		if archetype == detector.ArchetypeUnknown {
-			fmt.Println("❌ Could not determine project type.")
-			os.Exit(1)
-		}
-		fmt.Printf("✅ Detected a %s project.\n", archetype)
+        currentDir, _ := os.Getwd()
+        profile, err := detector.GetProjectProfile(currentDir)
+        if err != nil {
+            fmt.Printf("❌ %v\n", err)
+            os.Exit(1)
+        }
 
-		reader := bufio.NewReader(os.Stdin)
-		fmt.Print(" Enter a short, lowercase name for your application (e.g., 'my-api'): ")
-		appName, _ := reader.ReadString('\n')
-		appName = strings.TrimSpace(appName)
-		if appName == "" {
-			fmt.Println("❌ App name cannot be empty.")
-			os.Exit(1)
-		}
+        fmt.Printf("✅ Detected a %s project.\n", profile.Archetype)
 
-		data := generator.TemplateData{
-			AppName: appName,
-		}
+        reader := bufio.NewReader(os.Stdin)
+        fmt.Print(" Enter a short, lowercase name for your application (e.g., 'my-api'): ")
+        appName, _ := reader.ReadString('\n')
+        appName = strings.TrimSpace(appName)
+        if appName == "" {
+            fmt.Println("❌ App name cannot be empty.")
+            os.Exit(1)
+        }
+
+        data := generator.TemplateData{
+            AppName: appName,
+            LanguageVersion: profile.LanguageVersion,
+        }
 
 		fmt.Println("\n Generating architectural files...")
 

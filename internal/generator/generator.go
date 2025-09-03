@@ -9,7 +9,7 @@ import (
 // Data struct holds the user's answers
 type TemplateData struct {
     AppName string
-    // ... more fields later
+    LanguageVersion string
 }
 
 func GenerateFile(templatePath string, outputPath string, data TemplateData) error {

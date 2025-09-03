@@ -1,13 +1,16 @@
 # FILE: internal/templates/php_laravel/Dockerfile.tmpl
+
+# The PHP version is now a dynamic variable from our detector
+ARG PHP_VERSION={{ .LanguageVersion }}
+
 # --- Build Stage ---
-FROM composer:2 as vendor
+FROM composer:2-php${PHP_VERSION} AS vendor
 WORKDIR /app
 COPY . .
-# Install dependencies
 RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 
 # --- Final Stage ---
-FROM php:8.2-fpm-alpine
+FROM php:${PHP_VERSION}-fpm-alpine
 WORKDIR /var/www/html
 
 # Install required PHP extensions
