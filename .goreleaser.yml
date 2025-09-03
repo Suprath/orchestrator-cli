@@ -45,3 +45,6 @@ dockers:
       - internal/templates
       - go.mod
       - go.sum
+      - main.go
+      - cmd/
+      - internal/
