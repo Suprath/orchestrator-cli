@@ -4,7 +4,9 @@ FROM golang:1.24-alpine AS builder
 WORKDIR /src
 COPY go.mod go.sum ./
 RUN go mod download
-COPY . .
+COPY main.go ./
+COPY cmd/ ./cmd/
+COPY internal/ ./internal/
 # Build the orchestrator binary for a linux/amd64 environment
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /orchestrator .
 
