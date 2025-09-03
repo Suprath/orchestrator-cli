@@ -92,3 +92,88 @@ func TestGetProjectProfile_PHPLaravel(t *testing.T) {
         })
     }
 }
+
+func TestGetProjectProfile_JavaSpringBoot(t *testing.T) {
+	// Create a temporary directory for the test
+	tempDir, err := os.MkdirTemp("", "orchestrator-test-java-*")
+	if err != nil {
+		t.Fatalf("Failed to create temp dir: %v", err)
+	}
+	defer os.RemoveAll(tempDir) // Clean up the directory after the test
+
+	// Create dummy fingerprint files for Java Spring Boot
+	os.WriteFile(filepath.Join(tempDir, "pom.xml"), []byte("<project></project>"), 0644)
+	os.MkdirAll(filepath.Join(tempDir, "src", "main", "java"), 0755)
+
+	// Run the function we want to test
+	profile, err := GetProjectProfile(tempDir)
+
+	if err != nil {
+		t.Errorf("Did not expect an error, but got: %v", err)
+	}
+	if profile == nil {
+		t.Fatalf("Expected a profile, but got nil")
+	}
+	if profile.Archetype != ArchetypeJavaSpringBoot {
+		t.Errorf("Expected archetype %s, but got %s", ArchetypeJavaSpringBoot, profile.Archetype)
+	}
+	if profile.LanguageVersion != "17" {
+		t.Errorf("Expected language version %s, but got %s", "17", profile.LanguageVersion)
+	}
+}
+
+func TestGetProjectProfile_PythonFastAPI(t *testing.T) {
+	// Create a temporary directory for the test
+	tempDir, err := os.MkdirTemp("", "orchestrator-test-python-*")
+	if err != nil {
+		t.Fatalf("Failed to create temp dir: %v", err)
+	}
+	defer os.RemoveAll(tempDir) // Clean up the directory after the test
+
+	// Create dummy fingerprint files for Python FastAPI
+	os.WriteFile(filepath.Join(tempDir, "requirements.txt"), []byte("fastapi\n"), 0644)
+
+	// Run the function we want to test
+	profile, err := GetProjectProfile(tempDir)
+
+	if err != nil {
+		t.Errorf("Did not expect an error, but got: %v", err)
+	}
+	if profile == nil {
+		t.Fatalf("Expected a profile, but got nil")
+	}
+	if profile.Archetype != ArchetypePythonFastAPI {
+		t.Errorf("Expected archetype %s, but got %s", ArchetypePythonFastAPI, profile.Archetype)
+	}
+	if profile.LanguageVersion != "3.9" {
+		t.Errorf("Expected language version %s, but got %s", "3.9", profile.LanguageVersion)
+	}
+}
+
+func TestGetProjectProfile_NodeJSNextJS(t *testing.T) {
+	// Create a temporary directory for the test
+	tempDir, err := os.MkdirTemp("", "orchestrator-test-nodejs-*")
+	if err != nil {
+		t.Fatalf("Failed to create temp dir: %v", err)
+	}
+	defer os.RemoveAll(tempDir) // Clean up the directory after the test
+
+	// Create dummy fingerprint files for NodeJS NextJS
+	os.WriteFile(filepath.Join(tempDir, "package.json"), []byte(`{"dependencies": {"next": "^12.0.0"}}`), 0644)
+
+	// Run the function we want to test
+	profile, err := GetProjectProfile(tempDir)
+
+	if err != nil {
+		t.Errorf("Did not expect an error, but got: %v", err)
+	}
+	if profile == nil {
+		t.Fatalf("Expected a profile, but got nil")
+	}
+	if profile.Archetype != ArchetypeNodeJSNextJS {
+		t.Errorf("Expected archetype %s, but got %s", ArchetypeNodeJSNextJS, profile.Archetype)
+	}
+	if profile.LanguageVersion != "18" {
+		t.Errorf("Expected language version %s, but got %s", "18", profile.LanguageVersion)
+	}
+}

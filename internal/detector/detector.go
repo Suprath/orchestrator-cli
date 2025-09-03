@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings" // NEW
 
 	"github.com/Masterminds/semver" // NEW
 )
@@ -60,7 +61,27 @@ func GetProjectProfile(dirPath string) (*ProjectProfile, error) {
 		return &ProjectProfile{Archetype: ArchetypePHPLaravel, LanguageVersion: version}, nil
 	}
 
-	// --- Add similar logic for package.json (Node.js), pom.xml (Java), etc. ---
+	// --- Java Spring Boot Detection ---
+	if fileExists(filepath.Join(dirPath, "pom.xml")) || fileExists(filepath.Join(dirPath, "build.gradle")) {
+		return &ProjectProfile{Archetype: ArchetypeJavaSpringBoot, LanguageVersion: "17"}, nil // Default to Java 17
+	}
+
+	// --- Python FastAPI Detection ---
+	if fileExists(filepath.Join(dirPath, "requirements.txt")) {
+		content, err := os.ReadFile(filepath.Join(dirPath, "requirements.txt"))
+		if err == nil && (strings.Contains(string(content), "fastapi") || strings.Contains(string(content), "FastAPI")) {
+			return &ProjectProfile{Archetype: ArchetypePythonFastAPI, LanguageVersion: "3.9"}, nil // Default to Python 3.9
+		}
+	}
+
+	// --- NodeJS NextJS Detection ---
+	packageJSONPath := filepath.Join(dirPath, "package.json")
+	if fileExists(packageJSONPath) {
+		content, err := os.ReadFile(packageJSONPath)
+		if err == nil && strings.Contains(string(content), "\"next\"") {
+			return &ProjectProfile{Archetype: ArchetypeNodeJSNextJS, LanguageVersion: "18"}, nil // Default to Node 18
+		}
+	}
 
 	return nil, fmt.Errorf("could not determine project type")
 }

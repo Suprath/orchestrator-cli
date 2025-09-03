@@ -20,13 +20,28 @@ func CheckAuthStatus() error {
 
 // SetBranchProtection applies protection rules to a given branch.
 func SetBranchProtection(repo string, branch string) error {
-	fmt.Printf("INFO: Applying branch protection to '%s' on repo '%s'...\n", branch, repo)
-	// This command requires PRs and successful status checks before merging.
-	cmd := exec.Command("gh", "api", fmt.Sprintf("repos/%s/branches/%s/protection", repo, branch), "-X", "PUT", "--silent", "-f", "required_status_checks=null", "-f", "enforce_admins=true", "-f", "required_pull_request_reviews=null", "-f", "restrictions=null")
+	fmt.Printf("INFO: Applying branch protection to '%s' on repo '%s'...
+", branch, repo)
+
+	// Construct the gh api command to enable branch protection rules
+	// This includes requiring pull request reviews and status checks.
+	cmd := exec.Command(
+		"gh", "api",
+		fmt.Sprintf("repos/%s/branches/%s/protection", repo, branch),
+		"-X", "PUT",
+		"--silent",
+		"-f", "required_pull_request_reviews[enabled]=true",
+		"-f", "required_pull_request_reviews[required_approving_review_count]=1",
+		"-f", "required_status_checks[strict]=true",
+		"-f", "required_status_checks[contexts][0]=ci/cd-pipeline", // Assuming a generic CI/CD status check name
+		"-f", "enforce_admins=true",
+		"-f", "restrictions=null",
+	)
 
 	if output, err := cmd.CombinedOutput(); err != nil {
-		return fmt.Errorf("failed to set branch protection: %s", string(output))
+		return fmt.Errorf("failed to set branch protection: %s\nOutput: %s", err, string(output))
 	}
-	fmt.Printf("INFO: Successfully protected branch '%s'.\n", branch)
+	fmt.Printf("INFO: Successfully protected branch '%s'.
+", branch)
 	return nil
 }
