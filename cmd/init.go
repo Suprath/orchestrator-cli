@@ -68,7 +68,7 @@ var initCmd = &cobra.Command{
 			if file.IsCommon {
 				templatePath = file.TemplatePath
 			} else {
-				templatePath = filepath.Join(string(archetype), file.TemplatePath)
+				templatePath = filepath.Join(string(profile.Archetype), file.TemplatePath)
 			}
 
 			outputDir := filepath.Dir(file.OutputPath)

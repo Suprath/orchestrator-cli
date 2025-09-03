@@ -97,7 +97,7 @@ func parsePhpVersionFromComposer(composerPath string) (string, error) {
 
 	// Define a list of common PHP versions to check against
 	// In a real scenario, this might come from a configuration or a more dynamic source
-	phpVersions := []string{"8.3.0", "8.2.0", "8.1.0", "8.0.0", "7.4.0"}
+	phpVersions := []string{"7.4.0", "8.0.0", "8.1.0", "8.2.0", "8.3.0"}
 	
 	for _, v := range phpVersions {
 		version, err := semver.NewVersion(v)
