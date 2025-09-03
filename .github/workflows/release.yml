@@ -52,6 +52,4 @@ jobs:
           DOCKER_BUILDKIT: 1
           BUILDX_BUILDER: my-builder
 
-      - name: Build and Push Docker Image
-        run: |
-          echo "Hello from Docker build step"
+      
