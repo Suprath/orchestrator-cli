@@ -39,7 +39,14 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      
+      - name: Debug: Verify Docker Login Status
+        run: docker login
+
+      - name: Debug: Try Pushing a Dummy Image
+        run: |
+          docker pull hello-world:latest
+          docker tag hello-world:latest suprathps/dummy-test-image:latest
+          docker push suprathps/dummy-test-image:latest
 
       - name: Run GoReleaser (without Docker build/push)
         uses: goreleaser/goreleaser-action@v5
@@ -50,5 +57,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCKER_BUILDKIT: 1
           BUILDX_BUILDER: my-builder
-
-      
