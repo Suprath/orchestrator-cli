@@ -15,9 +15,21 @@ FROM alpine:latest
 RUN apk add --no-cache \
     git \
     docker-cli \
-    docker-compose \
-    terraform \
-    github-cli # This provides the 'gh' command
+    docker-compose
+
+# Install Terraform
+RUN apk add --no-cache curl unzip && \
+    curl -LO https://releases.hashicorp.com/terraform/1.5.7/terraform_1.5.7_linux_amd64.zip && \
+    unzip terraform_1.5.7_linux_amd64.zip -d /usr/local/bin && \
+    rm terraform_1.5.7_linux_amd64.zip
+
+# Install GitHub CLI
+RUN apk add --no-cache curl tar && \
+    curl -LO https://github.com/cli/cli/releases/download/v2.39.1/gh_2.39.1_linux_amd64.tar.gz && \
+    tar -xzf gh_2.39.1_linux_amd64.tar.gz -C /tmp && \
+    mv /tmp/gh_2.39.1_linux_amd64/bin/gh /usr/local/bin && \
+    rm -rf /tmp/gh_2.39.1_linux_amd64 && \
+    rm gh_2.39.1_linux_amd64.tar.gz
 
 # Copy the compiled orchestrator binary from the builder stage
 COPY --from=builder /orchestrator /usr/local/bin/orchestrator
