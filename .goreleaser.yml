@@ -35,8 +35,8 @@ changelog:
 # Docker image configuration
 dockers:
   - image_templates:
-      - "yourdockerhubuser/orchestrator:{{ .Tag }}"
-      - "yourdockerhubuser/orchestrator:latest"
+      - "suprathps/orchestrator:{{ .Tag }}"
+      - "suprathps/orchestrator:latest"
     dockerfile: Dockerfile # Points to your 'mega-image' Dockerfile
     build_flag_templates:
       - "--platform=linux/amd64"
