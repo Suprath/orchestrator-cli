@@ -31,10 +31,7 @@ jobs:
             network=host
           buildkitd-flags: --debug
           platforms: linux/amd64,linux/arm64
-          builder: my-builder
-
-      - name: Use created Buildx builder
-        run: docker buildx use my-builder
+          name: my-builder # Changed from 'builder' to 'name'
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
