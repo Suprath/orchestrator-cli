@@ -26,8 +26,10 @@ const (
 
 // ProjectProfile struct
 type ProjectProfile struct {
-	Archetype       Archetype
-	LanguageVersion string // e.g., "8.2", "18", "3.10"
+	Archetype           Archetype
+	LanguageVersion     string // e.g., "8.2", "18", "3.10"
+	DatabaseType        string
+	DeploymentEnvironment string
 }
 
 // fileExists is a helper function to check if a file exists at a given path.

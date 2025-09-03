@@ -10,6 +10,8 @@ import (
 type TemplateData struct {
     AppName string
     LanguageVersion string
+    DatabaseType string
+    DeploymentEnvironment string
 }
 
 func GenerateFile(templatePath string, outputPath string, data TemplateData) error {

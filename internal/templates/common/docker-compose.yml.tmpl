@@ -5,10 +5,41 @@ services:
     ports:
       - "8000:8000"
     environment:
+      {{- if eq .DatabaseType "mysql" }}
+      - DATABASE_URL=mysql://root:password@db:3306/{{ .AppName }}
+      {{- else if eq .DatabaseType "postgresql" }}
       - DATABASE_URL=postgresql://myuser:mypassword@db:5432/{{ .AppName }}
+      {{- else if eq .DatabaseType "mongodb" }}
+      - DATABASE_URL=mongodb://db:27017/{{ .AppName }}
+      {{- else }}
+      # Custom database type, configure DATABASE_URL manually
+      - DATABASE_URL=your_custom_database_url
+      {{- end }}
   db:
+    {{- if eq .DatabaseType "mysql" }}
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: {{ .AppName }}
+    ports:
+      - "3306:3306"
+    {{- else if eq .DatabaseType "postgresql" }}
     image: postgres:15-alpine
     environment:
       POSTGRES_DB: {{ .AppName }}
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypassword
+    ports:
+      - "5432:5432"
+    {{- else if eq .DatabaseType "mongodb" }}
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_DATABASE: {{ .AppName }}
+    ports:
+      - "27017:27017"
+    {{- else }}
+    # Custom database type, define your database service here
+    # image: your_custom_db_image
+    # environment:
+    #   YOUR_DB_ENV_VAR: your_value
+    {{- end }}

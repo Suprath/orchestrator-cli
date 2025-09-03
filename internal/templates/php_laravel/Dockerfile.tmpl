@@ -14,8 +14,24 @@ FROM php:${PHP_VERSION}-fpm-alpine
 WORKDIR /var/www/html
 
 # Install required PHP extensions
-RUN apk add --no-cache oniguruma-dev libxml2-dev
-RUN docker-php-ext-install mbstring dom pdo pdo_mysql
+RUN apk add --no-cache oniguruma-dev libxml2-dev 
+    {{- if eq .DatabaseType "mysql" }}
+    mysql-client \
+    {{- else if eq .DatabaseType "postgresql" }}
+    postgresql-client \
+    {{- else if eq .DatabaseType "mongodb" }}
+    # MongoDB PHP driver requires pecl, which is more complex for alpine
+    # Consider using a base image with it pre-installed or a multi-stage build
+    # for pecl extensions. For simplicity, we'll skip direct installation here.
+    {{- end }}
+
+RUN docker-php-ext-install mbstring dom pdo \
+    {{- if eq .DatabaseType "mysql" }}
+    pdo_mysql \
+    {{- else if eq .DatabaseType "postgresql" }}
+    pdo_pgsql \
+    {{- end }}
+
 
 # Copy application files
 COPY . .

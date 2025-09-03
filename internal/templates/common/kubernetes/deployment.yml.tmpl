@@ -18,10 +18,41 @@ spec:
         image: placeholder-image-url:latest # This will be updated by the CI/CD pipeline
         ports:
         - containerPort: 8000 # Default port, could be a template variable
+        env:
+        {{- if eq .DatabaseType "mysql" }}
+        - name: DATABASE_URL
+          value: "mysql://root:password@mysql-service:3306/{{ .AppName }}"
+        {{- else if eq .DatabaseType "postgresql" }}
+        - name: DATABASE_URL
+          value: "postgresql://myuser:mypassword@postgresql-service:5432/{{ .AppName }}"
+        {{- else if eq .DatabaseType "mongodb" }}
+        - name: DATABASE_URL
+          value: "mongodb://mongodb-service:27017/{{ .AppName }}"
+        {{- else }}
+        - name: DATABASE_URL
+          value: "your_custom_database_url" # Custom database type, configure manually
+        {{- end }}
         resources:
+          {{- if eq .DeploymentEnvironment "on_premise" }}
+          requests:
+            cpu: "500m"
+            memory: "1Gi"
+          limits:
+            cpu: "1000m"
+            memory: "2Gi"
+          {{- else if eq .DeploymentEnvironment "cloud" }}
           requests:
             cpu: "250m"
             memory: "512Mi"
           limits:
             cpu: "500m"
             memory: "1Gi"
+          {{- else }}
+          # Custom deployment environment, configure resources manually
+          requests:
+            cpu: "250m"
+            memory: "512Mi"
+          limits:
+            cpu: "500m"
+            memory: "1Gi"
+          {{- end }}

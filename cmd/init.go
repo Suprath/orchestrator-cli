@@ -43,9 +43,57 @@ var initCmd = &cobra.Command{
             os.Exit(1)
         }
 
+        // Prompt for Database Type
+        fmt.Println("\n Select your database type:")
+        fmt.Println(" 1. MySQL")
+        fmt.Println(" 2. PostgreSQL")
+        fmt.Println(" 3. MongoDB")
+        fmt.Println(" 4. Custom")
+        fmt.Print(" Enter your choice (1-4): ")
+        dbChoiceStr, _ := reader.ReadString('\n')
+        dbChoiceStr = strings.TrimSpace(dbChoiceStr)
+        
+        databaseType := ""
+        switch dbChoiceStr {
+        case "1":
+            databaseType = "mysql"
+        case "2":
+            databaseType = "postgresql"
+        case "3":
+            databaseType = "mongodb"
+        case "4":
+            fmt.Print(" Enter custom database name: ")
+            customDBName, _ := reader.ReadString('\n')
+            databaseType = strings.TrimSpace(customDBName)
+        default:
+            fmt.Println("❌ Invalid database choice. Exiting.")
+            os.Exit(1)
+        }
+
+        // Prompt for Deployment Environment
+        fmt.Println("\n Select your deployment environment:")
+        fmt.Println(" 1. On-Premise")
+        fmt.Println(" 2. Cloud")
+        fmt.Print(" Enter your choice (1-2): ")
+        envChoiceStr, _ := reader.ReadString('\n')
+        envChoiceStr = strings.TrimSpace(envChoiceStr)
+
+        deploymentEnvironment := ""
+        switch envChoiceStr {
+        case "1":
+            deploymentEnvironment = "on_premise"
+        case "2":
+            deploymentEnvironment = "cloud"
+        default:
+            fmt.Println("❌ Invalid deployment environment choice. Exiting.")
+            os.Exit(1)
+        }
+
         data := generator.TemplateData{
             AppName: appName,
             LanguageVersion: profile.LanguageVersion,
+            DatabaseType: databaseType,
+            DeploymentEnvironment: deploymentEnvironment,
         }
 
 		fmt.Println("\n Generating architectural files...")
