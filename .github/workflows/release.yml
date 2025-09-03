@@ -54,7 +54,8 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          VERSION=$(echo ${{ github.ref }} | sed -e 's,.*/\(v.*\),\1,')
+          VERSION=${{ github.ref }}
+          VERSION=${VERSION#refs/tags/}
           IMAGE_NAME=suprathps/orchestrator
           
           docker buildx build --platform linux/amd64,linux/arm64 \
