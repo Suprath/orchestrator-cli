@@ -53,7 +53,5 @@ jobs:
           BUILDX_BUILDER: my-builder
 
       - name: Build and Push Docker Image
-        env:
-          TAG_VERSION: ${{ github.ref_name }}
         run: |
           echo "Hello from Docker build step"
