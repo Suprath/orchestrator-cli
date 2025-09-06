@@ -150,20 +150,3 @@ Kubernetes is an open-source system for automating deployment, scaling, and mana
     kubectl apply -f kubernetes/deployment.yml
     ```
     This command applies the Kubernetes deployment configuration to your cluster, creating or updating your application's pods and other resources.
-
-## 4. Updating GitHub Repository "About" Section
-
-To enhance the visibility and discoverability of your `orchestrator-cli` project on GitHub, you should update its "About" section.
-
-**Steps to Update:**
-
-1.  Navigate to your repository on GitHub.
-2.  On the main repository page, locate the "About" section on the right sidebar.
-3.  Click on the "⚙️" (gear) icon or "Edit" button within the "About" section.
-4.  **Add a Description:** Provide a concise summary of your project.
-    *   **Suggested Description:** "A CLI tool to generate production-ready CI/CD architectures for various tech stacks, including Docker, Kubernetes, and Terraform."
-5.  **Add Topics:** Topics help users find your project.
-    *   **Suggested Topics:** `cli`, `ci-cd`, `docker`, `kubernetes`, `terraform`, `go`, `automation`, `devops`, `php`, `laravel`, `java`, `spring-boot`, `python`, `fastapi`, `nodejs`, `nextjs`
-6.  Click "Save changes".
-
-This will make your project more discoverable and provide a quick overview for anyone visiting your repository.
